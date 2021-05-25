@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yanzhen.mapper.QuestionOptDao">
+	<resultMap type="com.yanzhen.entity.QuestionOpt" id="QuestionOpt">
+		<id column="id" property="id"/>
+		<result column="answer" 			property="answer"/>
+		<result column="id" 			property="id"/>
+		<result column="opt" 			property="opt"/>
+		<result column="orderby" 			property="orderby"/>
+		<result column="question_id" 			property="questionId"/>
+		<result column="survey_id" 			property="surveyId"/>
+		<result column="type" 			property="type"/>
+	</resultMap>
+ 
+	<insert id="create" keyProperty="id" useGeneratedKeys="true" parameterType="com.yanzhen.entity.QuestionOpt">
+		insert into tb_question_opt(
+			answer,
+			id,
+			opt,
+			orderby,
+			question_id,
+			survey_id,
+			type
+		)values(
+			#{answer},
+			#{id},
+			#{opt},
+			#{orderby},
+			#{questionId},
+			#{surveyId},
+			#{type}
+		)
+	</insert>
+
+	<select id="query" resultMap="QuestionOpt">
+		select * from tb_question_opt
+		<include refid="QuestionOptFindCriteria"/>
+		<if test="order_by_column!=null and order_by_column!=''">order by ${order_by_column} ${order_by}</if>
+		<if test="offset!=null and rows!=null">limit ${offset} , ${rows}</if>
+	</select>
+	
+	<select id="count" resultType="int">
+		select count(1) from tb_question_opt
+		<include refid="QuestionOptFindCriteria"/>
+	</select>
+	
+	<select id="detail" resultMap="QuestionOpt">
+		select * from tb_question_opt
+		<include refid="QuestionOptFindCriteria"/>
+		limit 1
+	</select>
+	
+	<delete id="delete">
+		delete from tb_question_opt
+		<include refid="QuestionOptFindCriteria" />
+	</delete>
+	<update id="update">
+		update tb_question_opt
+		<include refid="QuestionOptUpdateCriteria"/>
+		<include refid="QuestionOptFindCriteria"/>
+	</update>
+	<sql id="QuestionOptFindCriteria">
+		<where>
+			<if test="answer != null">and answer = #{answer}</if>
+			<if test="id != null">and id = #{id}</if>
+			<if test="opt != null">and opt = #{opt}</if>
+			<if test="orderby != null">and orderby = #{orderby}</if>
+			<if test="questionId != null">and question_id = #{questionId}</if>
+			<if test="surveyId != null">and survey_id = #{surveyId}</if>
+			<if test="type != null">and type = #{type}</if>
+		</where>
+	</sql>
+	<sql id="QuestionOptUpdateCriteria">
+		<set>
+			<if test="updateAnswer != null">answer = #{updateAnswer},</if>
+			<if test="updateId != null">id = #{updateId},</if>
+			<if test="updateOpt != null">opt = #{updateOpt},</if>
+			<if test="updateOrderby != null">orderby = #{updateOrderby},</if>
+			<if test="updateQuestionId != null">question_id = #{updateQuestionId},</if>
+			<if test="updateSurveyId != null">survey_id = #{updateSurveyId},</if>
+			<if test="updateType != null">type = #{updateType},</if>
+		</set>
+	</sql>
+</mapper>

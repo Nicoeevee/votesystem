@@ -1,0 +1,41 @@
+{
+  "homeInfo": {
+    "title": "人人微投票系统",
+    "href": "survey/list"
+  },
+  "logoInfo": {
+    "title": "人人微投票系统",
+    "image": "",
+    "href": ""
+  },
+  "menuInfo": [
+    {
+      "title": "投票管理",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "child": [
+        {
+          "title": "投票管理",
+          "href": "survey/list",
+          "icon": "fa fa-window-maximize",
+          "target": "_self"
+        }
+      ]
+    },
+    {
+      "title": "系统管理",
+      "icon": "fa fa-slideshare",
+      "href": "",
+      "target": "_self",
+      "child": [
+        {
+          "title": "用户管理",
+          "href": "admin/list",
+          "icon": "fa fa-superpowers",
+          "target": "_self"
+        }
+      ]
+    }
+  ]
+}

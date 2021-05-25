@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+			    http://www.springframework.org/schema/beans/spring-beans.xsd
+			    http://www.springframework.org/schema/context
+			    http://www.springframework.org/schema/context/spring-context.xsd
+			    http://www.springframework.org/schema/aop
+			    http://www.springframework.org/schema/aop/spring-aop.xsd
+			    http://www.springframework.org/schema/tx
+			    http://www.springframework.org/schema/tx/spring-tx.xsd
+			    http://www.springframework.org/schema/mvc
+			    http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <context:component-scan base-package="com.yanzhen.controller"/>
+    <bean id="charset" class="java.nio.charset.Charset" factory-method="lookup">
+        <constructor-arg value="UTF-8"/>
+    </bean>
+
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="com.yanzhen.utils.DateConvert"></bean>
+            </set>
+        </property>
+    </bean>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/page/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+
+    <!--https://www.cnblogs.com/mophy/p/8465598.html-->
+    <mvc:default-servlet-handler/>
+
+    <!--message-converters:HttpMessageConvert 负责将一个请求信息转换为一个对象（类型为T），将对象（类型为T）转换为响应信息。-->
+    <!--ConversionService:Spring MVC通过反射机制对目标处理方法签名进行分析，将请求消息绑定到处理方法入参中,核心部件是DataBinder-->
+
+    <mvc:annotation-driven conversion-service="conversionService">
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg name="defaultCharset" ref="charset"/>
+            </bean>
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="objectMapper">
+                    <bean class="com.fasterxml.jackson.databind.ObjectMapper">
+                        <property name="dateFormat">
+                            <bean class="java.text.SimpleDateFormat">
+                                <constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss"/>
+                            </bean>
+                        </property>
+                    </bean>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--上传文件的最大大小，单位为字节 -->
+        <property name="maxUploadSize" value="10485760"></property>
+        <!-- 上传文件的编码 -->
+        <property name="defaultEncoding" value="UTF-8"></property>
+    </bean>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**/*"/>
+            <mvc:exclude-mapping path="/reg"/>
+            <mvc:exclude-mapping path="/login"/>
+            <mvc:exclude-mapping path="/dy/*"/>
+            <mvc:exclude-mapping path="/static/**"/>
+            <bean class="com.yanzhen.utils.SessionInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
+    
+
+</beans>

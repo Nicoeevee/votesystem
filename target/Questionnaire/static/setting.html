@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>关于</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="css/public.css" media="all">
+    <style>
+        .layui-form-item .layui-input-company {width: auto;padding-right: 10px;line-height: 38px;}
+    </style>
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+        <div class="layui-form layuimini-form">
+            <div class="layui-form-item">
+                <label class="layui-form-label required">项目名称：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="sitename" lay-verify="required" lay-reqtext="网站域名不能为空" placeholder="请输入网站名称"  value="人人微投票在线投票系统" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label required">作者学号：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="domain" lay-verify="required" lay-reqtext="网站域名不能为空" placeholder="请输入网站域名"  value="1800100455" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label required">作者姓名：</label>
+                <div class="layui-input-inline" style="width: 80px;">
+                    <input type="text" name="cache" lay-verify="number" value="张佳源" class="layui-input">
+                </div>
+                <div class="layui-input-inline layui-input-company"></div>
+<!--                <div class="layui-form-mid layui-word-aux">本地开发一般推荐设置为 0，线上环境建议设置为 10。</div>-->
+            </div>
+<!--            <div class="layui-form-item">-->
+<!--                <label class="layui-form-label">项目管理工具：</label>-->
+<!--                <div class="layui-input-inline" style="width: 80px;">-->
+<!--                    <input type="text" name="cache" lay-verify="number" value="Maven" class="layui-input">-->
+<!--                </div>-->
+<!--&lt;!&ndash;                <div class="layui-input-inline layui-input-company">KB</div>&ndash;&gt;-->
+<!--&lt;!&ndash;                <div class="layui-form-mid layui-word-aux">提示：1 M = 1024 KB</div>&ndash;&gt;-->
+<!--            </div>-->
+<!--            <div class="layui-form-item">-->
+<!--                <label class="layui-form-label">数据库：</label>-->
+<!--                <div class="layui-input-block">-->
+<!--                    <input type="text" name="cache" value="MySQL8.0" class="layui-input">-->
+<!--                </div>-->
+<!--            </div>-->
+
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">开发环境：</label>
+                <div class="layui-input-block">
+                    <textarea name="title" class="layui-textarea">数据库：MySQL8.0；数据库设计软件：Power Designer16.5；IDE：IDEA；Web容器：Apache Tomcat8.5.65；项目管理工具：Maven</textarea>
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">前端框架：</label>
+                <div class="layui-input-block">
+                    <textarea name="keywords" class="layui-textarea" placeholder="LayUI mini">LayUI mini</textarea>
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">后端框架：</label>
+                <div class="layui-input-block">
+                    <textarea name="descript" class="layui-textarea">Spring + SpringMVC + Mybatis</textarea>
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label required">版权信息：</label>
+                <div class="layui-input-block">
+                    <textarea name="copyright" class="layui-textarea">©2021 All rights reserved 张佳源</textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <a class="layui-btn layui-btn-normal" lay-submit lay-filter="setting" href="rrwtp.html">返回</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form
+            , layer = layui.layer;
+
+        //监听提交
+        form.on('submit(setting)', function (data) {
+            parent.layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            });
+            return false;
+        });
+
+    });
+</script>
+</body>
+</html>

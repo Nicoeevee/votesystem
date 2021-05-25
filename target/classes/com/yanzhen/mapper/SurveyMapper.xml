@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yanzhen.mapper.SurveyDao">
+	<resultMap type="com.yanzhen.entity.Survey" id="Survey">
+		<id column="id" property="id"/>
+		<result column="anon" 			property="anon"/>
+		<result column="bgimg" 			property="bgimg"/>
+		<result column="bounds" 			property="bounds"/>
+		<result column="create_time" 			property="createTime"/>
+		<result column="creator" 			property="creator"/>
+		<result column="end_time" 			property="endTime"/>
+		<result column="id" 			property="id"/>
+		<result column="logo" 			property="logo"/>
+		<result column="password" 			property="password"/>
+		<result column="remark" 			property="remark"/>
+		<result column="rules" 			property="rules"/>
+		<result column="start_time" 			property="startTime"/>
+		<result column="state" 			property="state"/>
+		<result column="title" 			property="title"/>
+		<result column="url" 			property="url"/>
+	</resultMap>
+ 
+	<insert id="create" keyProperty="id" useGeneratedKeys="true" parameterType="com.yanzhen.entity.Survey">
+		insert into tb_survey(
+			anon,
+			bgimg,
+			bounds,
+			create_time,
+			creator,
+			end_time,
+			id,
+			logo,
+			password,
+			remark,
+			rules,
+			start_time,
+			state,
+			title,
+			url
+		)values(
+			#{anon},
+			#{bgimg},
+			#{bounds},
+			now(),
+			#{creator},
+			#{endTime},
+			#{id},
+			#{logo},
+			#{password},
+			#{remark},
+			#{rules},
+			#{startTime},
+			#{state},
+			#{title},
+			#{url}
+		)
+	</insert>
+
+	<select id="query" resultMap="Survey">
+		select * from tb_survey
+		<include refid="SurveyFindCriteria"/>
+	</select>
+	
+	<select id="count" resultType="int">
+		select count(1) from tb_survey
+		<include refid="SurveyFindCriteria"/>
+	</select>
+	
+	<select id="detail" resultMap="Survey">
+		select * from tb_survey
+		<include refid="SurveyFindCriteria"/>
+		limit 1
+	</select>
+	
+	<delete id="delete">
+		delete from tb_survey
+		<include refid="SurveyFindCriteria" />
+	</delete>
+	<update id="update">
+		update tb_survey
+		<include refid="SurveyUpdateCriteria"/>
+		<include refid="SurveyFindCriteria"/>
+	</update>
+	<sql id="SurveyFindCriteria">
+		<where>
+			<if test="anon != null">and anon = #{anon}</if>
+			<if test="bounds != null and bounds != ''">and bounds = #{bounds}</if>
+			<if test="id != null and id != ''">and id = #{id}</if>
+			<if test="creator != null">and creator = #{creator}</if>
+			<if test="password != null and password != ''">and password = #{password}</if>
+			<if test="remark != null and remark != ''">and remark = #{remark}</if>
+			<if test="rules != null">and rules = #{rules}</if>
+			<if test="state != null and state != ''">and state = #{state}</if>
+			<if test="title != null and title != ''">and title like concat('%',#{title},'%')</if>
+			<if test="url != null and url != ''">and url = #{url}</if>
+		</where>
+	</sql>
+	<sql id="SurveyUpdateCriteria">
+		<set>
+			<if test="updateAnon != null">anon = #{updateAnon},</if>
+			<if test="updateBgimg != null and updateBgimg != ''">bgimg = #{updateBgimg},</if>
+			<if test="updateBounds != null and updateBounds != ''">bounds = #{updateBounds},</if>
+			<if test="updateCreateTime != null">create_time = #{updateCreateTime},</if>
+			<if test="updateCreator != null and updateCreator != ''">creator = #{updateCreator},</if>
+			<if test="updateEndTime != null">end_time = #{updateEndTime},</if>
+			<if test="updateId != null  and updateId != ''">id = #{updateId},</if>
+			<if test="updateLogo != null and updateLogo != ''">logo = #{updateLogo},</if>
+			<if test="updatePassword != null and updatePassword != ''">password = #{updatePassword},</if>
+			<if test="updateRemark != null and updateRemark != ''">remark = #{updateRemark},</if>
+			<if test="updateRules != null and updateRules != ''">rules = #{updateRules},</if>
+			<if test="updateStartTime != null">start_time = #{updateStartTime},</if>
+			<if test="updateState != null and updateState != ''">state = #{updateState},</if>
+			<if test="updateTitle != null and updateTitle != ''">title = #{updateTitle},</if>
+			<if test="updateUrl != null and updateUrl != ''">url = #{updateUrl},</if>
+		</set>
+	</sql>
+
+	<select id="queryByState" parameterType="string" resultType="int">
+		<![CDATA[select id from tb_survey where start_time <=now() and end_time>now() and state = #{_parameter}]]>
+	</select>
+	<select id="queryByStateForExec" parameterType="string" resultType="int">
+		<![CDATA[select * from tb_survey where  end_time<now() and state = #{_parameter}]]>
+	</select>
+
+
+	<select id="queryMySurvey" resultMap="Survey">
+		select * from tb_survey where 1=1
+		<if test="state != null and state != ''">and state = #{state}</if>
+		<if test="title != null and title != ''">and title like concat('%',#{title},'%')</if>
+		and (state = '执行中' or state = '结束')
+	</select>
+
+</mapper>

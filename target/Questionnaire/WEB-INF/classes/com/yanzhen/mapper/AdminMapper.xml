@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yanzhen.mapper.AdminDao">
+	<resultMap type="com.yanzhen.entity.Admin" id="Admin">
+		<id column="id" property="id"/>
+		<result column="account" 			property="account"/>
+		<result column="id" 			property="id"/>
+		<result column="name" 			property="name"/>
+		<result column="password" 			property="password"/>
+		<result column="phone" 			property="phone"/>
+		<result column="remark" 			property="remark"/>
+		<result column="type" 			property="type"/>
+	</resultMap>
+ 
+	<insert id="create" keyProperty="id" useGeneratedKeys="true" parameterType="com.yanzhen.entity.Admin">
+		insert into tb_admin(
+			account,
+			id,
+			name,
+			password,
+			phone,
+			remark,
+			type
+		)values(
+			#{account},
+			#{id},
+			#{name},
+			#{password},
+			#{phone},
+			#{remark},
+			#{type}
+		)
+	</insert>
+
+	<select id="query" resultMap="Admin">
+		select * from tb_admin
+		<include refid="AdminFindCriteria"/>
+	</select>
+	
+	<select id="count" resultType="int">
+		select count(1) from tb_admin
+		<include refid="AdminFindCriteria"/>
+	</select>
+	
+	<select id="detail" resultMap="Admin">
+		select * from tb_admin
+		<include refid="AdminFindCriteria"/>
+		limit 1
+	</select>
+	
+	<delete id="delete">
+		delete from tb_admin
+		<include refid="AdminFindCriteria" />
+	</delete>
+	<update id="update">
+		update tb_admin
+		<include refid="AdminUpdateCriteria"/>
+		<include refid="AdminFindCriteria"/>
+	</update>
+	<sql id="AdminFindCriteria">
+		<where>
+			<if test="account != null and account != ''">and account = #{account}</if>
+			<if test="id != null and id != '' ">and id = #{id}</if>
+			<if test="name != null and name != ''">and name = #{name}</if>
+			<if test="password != null and password != ''">and password = #{password}</if>
+			<if test="phone != null and phone != ''">and phone = #{phone}</if>
+			<if test="remark != null and remark != ''">and remark = #{remark}</if>
+			<if test="type != null">and type = #{type}</if>
+		</where>
+	</sql>
+	<sql id="AdminUpdateCriteria">
+		<set>
+			<if test="updateAccount != null and updateAccount != ''">account = #{updateAccount},</if>
+			<if test="updateId != null and updateId != '' ">id = #{updateId},</if>
+			<if test="updateName != null and updateName != '' ">name = #{updateName},</if>
+			<if test="updatePassword != null and updatePassword != ''">password = #{updatePassword},</if>
+			<if test="updatePhone != null and updatePhone != ''">phone = #{updatePhone},</if>
+			<if test="updateRemark != null and updateRemark != ''">remark = #{updateRemark},</if>
+			<if test="updateType != null">type = #{updateType},</if>
+		</set>
+	</sql>
+</mapper>
